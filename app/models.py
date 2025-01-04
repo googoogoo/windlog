@@ -1,3 +1,6 @@
+from wtforms import TextAreaField
+from wtforms.validators import Length
+from hashlib import md5
 from datetime import datetime, timezone
 from typing import Optional
 import sqlalchemy as sa
@@ -15,7 +18,9 @@ class User(UserMixin, db.Model):
     # The so.WriteOnlyMapped defines sessions as a collection that will be populated with objects from the Session class.
     # The back_populates parameter establishes the relationship from the Session class back to the User class.
     sessions: so.WriteOnlyMapped['Session'] = so.relationship(back_populates='user')
-
+    about_me: so.Mapped[Optional[str]] = so.mapped_column(sa.String(140))
+    last_seen: so.Mapped[Optional[datetime]] = so.mapped_column(default=lambda: datetime.now(timezone.utc))
+    
     def __repr__(self):
         return '<User {}>'.format(self.username)
     
@@ -24,6 +29,10 @@ class User(UserMixin, db.Model):
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
+    
+    def avatar(self, size):
+        digest = md5(self.email.lower().encode('utf-8')).hexdigest()
+        return f'https://www.gravatar.com/avatar/{digest}?d=identicon&s={size}'
 
 @login.user_loader
 def load_user(id):
