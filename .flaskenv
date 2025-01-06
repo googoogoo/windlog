@@ -1,1 +1,2 @@
 FLASK_APP=windlog.py
+FLASK_DEBUG=1

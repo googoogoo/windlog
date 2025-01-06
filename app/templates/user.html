@@ -13,9 +13,19 @@
         </tr>
     </table>
     <hr>
-    {% for post in posts %}
-    <p>
-    {{ post.author.username }} says: <b>{{ post.body }}</b>
-    </p>
+    {% for session in sessions %}
+    <p>{{ session.user }} sailed on {{ session.session_at }} and the conditions:</p>
+    <ul>
+        <li>Wind speed: {{ session.windSpeed }}</li>
+        <li>Wind direction: {{ session.windDirection }}</li>
+        <li>Temperature: {{ session.temperature }}</li>
+        <li>Pressure: {{ session.pressure }}</li>
+        <li>Primary swell height: {{ session.primarySwellHeight }}</li>
+        <li>Primary swell direction: {{ session.primarySwellDirection }}</li>
+        <li>Primary swell period: {{ session.primarySwellPeriod }}</li>
+        <li>Secondary swell height: {{ session.secondarySwellHeight }}</li>
+        <li>Secondary swell direction: {{ session.secondarySwellDirection }}</li>
+        <li>Secondary swell period: {{ session.secondarySwellPeriod }}</li>
+    </ul> 
     {% endfor %}
 {% endblock %}

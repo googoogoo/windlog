@@ -33,7 +33,10 @@ class User(UserMixin, db.Model):
     def avatar(self, size):
         digest = md5(self.email.lower().encode('utf-8')).hexdigest()
         return f'https://www.gravatar.com/avatar/{digest}?d=identicon&s={size}'
-
+    
+    def sessions_user(self):
+        return (sa.select(Session).where(Session.user_id == self.id))
+    
 @login.user_loader
 def load_user(id):
     return db.session.get(User, int(id))
